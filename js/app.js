@@ -14,6 +14,18 @@ const searchTitle = (state) => {
 
 /* end search title */
 
+/* start show more */
+const showMore = ( state) => {
+    const showMoreButton = document.getElementById('show-more')
+    showMoreButton.style.display = state
+}
+const searchDescription = ( state) => {
+    const showMoreButton = document.getElementById('search-description')
+    showMoreButton.style.display = state
+}
+
+/* end show more */
+
 /* start search phone */
 const searchPhone = () => {
     toggleSpinner('block');
@@ -48,10 +60,11 @@ const searchPhone = () => {
 
 const showSearchPhone = (phones) => {
     console.log(phones)
+    searchDescription('none')
+    searchTitle('block')
     if (phones.length == 0){
         const errorForWriteAnything = document.getElementById('error-for-write-anything')
         errorForWriteAnything.style.display = 'block';
-        searchTitle('block')
         toggleSpinner('none');
     }
     for(const phone of phones){
@@ -73,8 +86,7 @@ const showSearchPhone = (phones) => {
         `
         searchPhonesContainer.appendChild(div);
 
-        const showMore = document.getElementById('show-more')
-        showMore.style.display = 'block'
+        showMore('block')
     }
     toggleSpinner('none');
 }
@@ -91,6 +103,9 @@ const detailsPhone = (id) =>{
 
 const showDetailsPhone = (phone) =>{
     /*  console.log(meal); */
+    showMore('none')
+    searchTitle('none')
+    searchDescription('block')
      const searchPhonesContainer = document.getElementById('searchPhonesContainer');
      searchPhonesContainer.textContent = ''
      const searchResultDescriptionContainer = document.getElementById('searchResultDescriptionContainer');
