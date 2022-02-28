@@ -110,9 +110,7 @@ const showDetailsPhone = (phone) =>{
          <h5 class="card-features"><span class= "name">Memory: </span>: ${phone.mainFeatures.memory}</h5>
          </h5>
          <h5 class="card-features"><span class= "name">Sensors: </span>${phone.mainFeatures.sensors} </h5>
-
-
-       </div>
+    </div>
      </div>
      `
      searchResultDescriptionContainer.appendChild(div);
