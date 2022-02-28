@@ -44,3 +44,23 @@ hr{
     font-size: larger;
     color: red;
 }
+
+.card, .for-add{
+    background-color: #454b69;
+}
+
+.card-title,.name{
+    color: #f6c964;
+    font-weight: 900;
+}
+
+.card-text{
+    color: white;
+    font-weight: 700;
+}
+
+.card-features{
+    color: white;
+}
+
+

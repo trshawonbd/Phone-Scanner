@@ -64,8 +64,8 @@ const showSearchPhone = (phones) => {
                     <img src="${phone.image}" class="card-img-top" alt="...">
                     <div class="card-body">
                       <h5 class="card-title">Name: ${phone.phone_name}</h5>
-                      <p id="tags" class="card-text">Brand:${phone.brand ? phone.brand : 'No Brand Name'}</p>
-                      <button onclick="detailsPhone()" type="button" class="btn btn-danger">Details</button>
+                      <p id="tags" class="card-text">Brand: ${phone.brand ? phone.brand : 'No Brand Name'}</p>
+                      <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
                     </div>
                   </div>
         `
@@ -73,3 +73,51 @@ const showSearchPhone = (phones) => {
     }
     toggleSpinner('none');
 }
+
+/* start show details */
+
+const detailsPhone = (id) =>{
+    const url = `https://openapi.programming-hero.com/api/phone/${id}`
+    console.log(url)
+    fetch(url)
+    .then(res => res.json())
+    .then(data => showDetailsPhone(data.data))
+}
+
+const showDetailsPhone = (phone) =>{
+    /*  console.log(meal); */
+     const searchPhonesContainer = document.getElementById('searchPhonesContainer');
+     searchPhonesContainer.textContent = ''
+     const searchResultDescriptionContainer = document.getElementById('searchResultDescriptionContainer');
+     searchResultDescriptionContainer.textContent ='';
+     const div = document.createElement('div');
+     div.classList.add('for-add');
+     div.innerHTML = `
+             
+     <div class="row g-0">
+     <div class="col-md-4">
+       <img src="${phone.image}" class="img-fluid w-100 rounded-start" alt="...">
+     </div>
+     <div class="col-md-8">
+       <div class="card-body">
+         <h3 class="card-title"><span class= "name">Name: </span> ${phone.name}</h3>
+         <h4 id="tags" class="card-text"> <span class= "name">Brand: </span>${phone.brand ? phone.brand : 'No Brand Name'}</h4>
+         <h4 id="tags" class="card-text"><span class= "name">Release Date: </span> ${phone.releaseDate ? phone.releaseDate : 'No ReleaseDate Published'}</h4>
+         <h4 class="card-features"><span class= "name">Main Features: </span> 
+         <h5 class="card-features"><span class= "name">Storage: </span> ${phone.mainFeatures.storage}</h5>
+         <h5 class="card-features"><span class= "name">Display Size: </span> ${phone.mainFeatures.displaySize}</h5>
+         <h5 class="card-features"><span class= "name">Chipset: </span>: ${phone.mainFeatures.chipSet}</h5>
+         <h5 class="card-features"><span class= "name">Memory: </span>: ${phone.mainFeatures.memory}</h5>
+         </h5>
+         <h5 class="card-features"><span class= "name">Sensors: </span>${phone.mainFeatures.sensors} </h5>
+
+
+       </div>
+     </div>
+     `
+     searchResultDescriptionContainer.appendChild(div);
+ }
+ 
+
+
+/* end show details */
