@@ -68,8 +68,13 @@ const showSearchPhone = (phones) => {
                       <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
                     </div>
                   </div>
+                  
+
         `
         searchPhonesContainer.appendChild(div);
+
+        const showMore = document.getElementById('show-more')
+        showMore.style.display = 'block'
     }
     toggleSpinner('none');
 }
