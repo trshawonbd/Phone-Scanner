@@ -20,15 +20,18 @@ const showMore = ( state) => {
     showMoreButton.style.display = state
 }
 const searchDescription = ( state) => {
-    const showMoreButton = document.getElementById('search-description')
-    showMoreButton.style.display = state
+    const searchDes = document.getElementById('search-description')
+    searchDes.style.display = state
 }
 
 /* end show more */
 
+
 /* start search phone */
 const searchPhone = () => {
     toggleSpinner('block');
+    searchDescription('none')
+    
     const errorForWriteAnything = document.getElementById('error-for-write-anything')
     errorForWriteAnything.style.display = 'none';
     const errorForWriteNothing = document.getElementById('error-for-write-nothing')
@@ -52,44 +55,59 @@ const searchPhone = () => {
         /* console.log(url)  */
         fetch(url)
         .then(res => res.json())
-        .then(data => showSearchPhone(data.data.slice(0,20)))
+        .then(data => showSearchPhone(data.data))
+        
 
  }
 
 }
 
-const showSearchPhone = (phones) => {
-    console.log(phones)
-    searchDescription('none')
-    searchTitle('block')
-    if (phones.length == 0){
-        const errorForWriteAnything = document.getElementById('error-for-write-anything')
-        errorForWriteAnything.style.display = 'block';
-        toggleSpinner('none');
-    }
-    for(const phone of phones){
-        const searchPhonesContainer = document.getElementById('searchPhonesContainer')
-        const div = document.createElement('div');
-        div.classList.add('col');
+const showSearchPhone = (data) => {
+    /* console.log(phones) */
+    const searchResultDescriptionContainer = document.getElementById('searchResultDescriptionContainer');
+     searchResultDescriptionContainer.textContent ='';
+     
+     
+         const phones = data.slice(0, 20);
+        const showMorePhones = () =>{
+            const phones = data.slice(20,...rest)
+            return phones;
+        }
+
+        searchTitle('block')
+            if (phones.length == 0){
+                const errorForWriteAnything = document.getElementById('error-for-write-anything')
+                errorForWriteAnything.style.display = 'block';
+                toggleSpinner('none');
+            }
+            for(const phone of phones){
+                const searchPhonesContainer = document.getElementById('searchPhonesContainer')
+                const div = document.createElement('div');
+                div.classList.add('col');
+                
+                div.innerHTML = `
+                <div class="card h-100">
+                            <img src="${phone.image}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title">Name: ${phone.phone_name}</h5>
+                              <p id="tags" class="card-text">Brand: ${phone.brand ? phone.brand : 'No Brand Name'}</p>
+                              <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
+                            </div>
+                          </div>
+                          
         
-        div.innerHTML = `
-        <div class="card h-100">
-                    <img src="${phone.image}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Name: ${phone.phone_name}</h5>
-                      <p id="tags" class="card-text">Brand: ${phone.brand ? phone.brand : 'No Brand Name'}</p>
-                      <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
-                    </div>
-                  </div>
-                  
+                `
+                searchPhonesContainer.appendChild(div);
+        
+                showMore('block')
+            }
+            toggleSpinner('none');
+        }
+        
 
-        `
-        searchPhonesContainer.appendChild(div);
 
-        showMore('block')
-    }
-    toggleSpinner('none');
-}
+    
+
 
 /* start show details */
 
