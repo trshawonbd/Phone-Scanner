@@ -27,6 +27,36 @@ const searchDescription = ( state) => {
 /* end show more */
 
 
+const common = (phone)=>{
+    const searchPhonesContainer = document.getElementById('searchPhonesContainer')
+            const div = document.createElement('div');
+            div.classList.add('col');
+            
+            div.innerHTML = `
+            <div class="card h-100">
+                        <img src="${phone.image}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Name: ${phone.phone_name}</h5>
+                          <p id="tags" class="card-text">Brand: ${phone.brand ? phone.brand : 'No Brand Name'}</p>
+                          <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
+                        </div>
+                      </div>
+                      
+    
+            `
+            searchPhonesContainer.appendChild(div);
+    
+}
+
+const lengthCheckForError = (phones) =>{
+    if (phones.length == 0){
+        const errorForWriteAnything = document.getElementById('error-for-write-anything')
+        errorForWriteAnything.style.display = 'block';
+        toggleSpinner('none');
+    }
+}
+
+
 /* start search phone */
 const searchPhone = () => {
     toggleSpinner('block');
@@ -50,60 +80,51 @@ const searchPhone = () => {
     }
     /* console.log(searchText) */
     else{
-        document.getElementById('search-text').value =''
+        document.getElementById('search-text').value ='' 
         const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
         /* console.log(url)  */
-        fetch(url)
-        .then(res => res.json())
-        .then(data => showSearchPhone(data.data))
+            fetch(url)
+            .then(res => res.json())
+            .then(data => showSearchPhone(data.data))
+        }
+        
+    
         
 
  }
+ 
 
-}
 
 const showSearchPhone = (data) => {
-    /* console.log(phones) */
+   
     const searchResultDescriptionContainer = document.getElementById('searchResultDescriptionContainer');
      searchResultDescriptionContainer.textContent ='';
+     let phones = data;
+     lengthCheckForError(phones);
+     phones = data.splice(0,20)
      
-     
-         const phones = data.slice(0, 20);
-        const showMorePhones = () =>{
-            const phones = data.slice(20,...rest)
-            return phones;
+    
+    document.getElementById('show-more').addEventListener('click',function(){
+       
+        phones = data.splice(21,40)
+        for(const phone of phones){
+            common(phone)
+            showMore('none')
         }
+        
+    })
 
         searchTitle('block')
-            if (phones.length == 0){
-                const errorForWriteAnything = document.getElementById('error-for-write-anything')
-                errorForWriteAnything.style.display = 'block';
-                toggleSpinner('none');
-            }
+
             for(const phone of phones){
-                const searchPhonesContainer = document.getElementById('searchPhonesContainer')
-                const div = document.createElement('div');
-                div.classList.add('col');
-                
-                div.innerHTML = `
-                <div class="card h-100">
-                            <img src="${phone.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                              <h5 class="card-title">Name: ${phone.phone_name}</h5>
-                              <p id="tags" class="card-text">Brand: ${phone.brand ? phone.brand : 'No Brand Name'}</p>
-                              <button onclick="detailsPhone('${phone.slug}')" type="button" class="btn btn-danger">Details</button>
-                            </div>
-                          </div>
-                          
-        
-                `
-                searchPhonesContainer.appendChild(div);
+                common(phone)
         
                 showMore('block')
             }
             toggleSpinner('none');
         }
         
+
 
 
     
